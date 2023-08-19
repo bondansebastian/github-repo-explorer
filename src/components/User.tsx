@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import { components } from "@octokit/openapi-types/types";
 import Collapsible from './Collapsible';
 import octokit from '../octokit';
 import Loading from './Loading';
 import { Button } from 'react-bootstrap';
 import Repo from './Repo';
+import NotificationContext from '../contexts/NotificationContext';
 
 type UserProps = {
     data: components["schemas"]["user-search-result-item"],
@@ -13,6 +14,7 @@ type UserProps = {
 
 export default function Help({ data, style = {} }: UserProps) 
 {
+    const { displayMessage } = useContext(NotificationContext);
     const [ hasNext, setHasNext ] = useState(true);
     const [ loading, setLoading ] = useState(false);
     const [ page, setPage ] = useState(1);
@@ -21,21 +23,26 @@ export default function Help({ data, style = {} }: UserProps)
     const fetchData = async () => {
         if (loading) return;
         setLoading(true);
-        const response = await octokit.rest.search.repos({
-            q: `user:${data.login}`,
-            per_page: 10,
-            page,
-        });
-        const items = [
-            ...repos,
-            ...response.data.items
-        ];
-        if (items.length >= response.data.total_count) {
-            setHasNext(false);
+        try {
+            const response = await octokit.rest.search.repos({
+                q: `user:${data.login}`,
+                per_page: 10,
+                page,
+            });
+            const items = [
+                ...repos,
+                ...response.data.items
+            ];
+            if (items.length >= response.data.total_count) {
+                setHasNext(false);
+            }
+            setRepos(items);
+            setPage(page + 1);
+        } catch (e:any) {
+            displayMessage(e?.message || 'Unknown error occured');
+        } finally {
+            setLoading(false);
         }
-        setRepos(items);
-        setPage(page + 1);
-        setLoading(false);
     }
 
     const handleOpen = () => {

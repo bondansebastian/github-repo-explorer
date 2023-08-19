@@ -1,12 +1,14 @@
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import './App.scss';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import Loading from './components/Loading';
 import { components } from "@octokit/openapi-types/types";
 import User from './components/User';
 import octokit from './octokit';
+import NotificationContext from './contexts/NotificationContext';
 
 function App() {
+    const { displayMessage } = useContext(NotificationContext);
     const [loading, setLoading] = useState(false);
     const [search, setSearch] = useState('');
     const [users, setUsers] = useState<components["schemas"]["user-search-result-item"][]>([]);
@@ -17,12 +19,17 @@ function App() {
 
     const handleSearch = async () => {
         setLoading(true);
-        const response = await octokit.rest.search.users({
-            q: `${encodeURIComponent(search)} in:name type:user`,
-            per_page: 5,
-        });
-        setUsers(response.data.items);
-        setLoading(false);
+        try {
+            const response = await octokit.rest.search.users({
+                q: `${encodeURIComponent(search)} in:name type:user`,
+                per_page: 5,
+            });
+            setUsers(response.data.items);
+        } catch (e:any) {
+            displayMessage(e?.message || 'Unknown error occured');
+        } finally {
+            setLoading(false);
+        }
     }
 
     return (

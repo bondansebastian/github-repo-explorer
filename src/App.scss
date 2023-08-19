@@ -8,6 +8,7 @@
         padding: 0;
         transition: all 0.3s ease;
     }
+
     .card-header {
         border: none;
         cursor: pointer;
@@ -18,8 +19,27 @@
             height: auto;
             padding: 1.25rem;
         }
+
         .card-header {
             border-bottom: 1px solid rgba(0, 0, 0, 0.125);
         }
+    }
+}
+
+.notification {
+    background: rgba(0, 0, 0, .7);
+    border-radius: 8px;
+    bottom: -50px;
+    color: white;
+    left: 50%;
+    padding: 5px 15px;
+    position: fixed;
+    text-align: center;
+    transform: translateX(-50%);
+    transition: all .2s ease;
+    z-index: 2;
+
+    &.visible {
+        bottom: 30px;
     }
 }
