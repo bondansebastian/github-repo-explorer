@@ -1,27 +1,45 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
 
-.card.collapsible {
-    .card-body {
-        height: 0;
-        min-height: 0;
-        overflow: hidden;
-        padding: 0;
-        transition: all 0.3s ease;
-    }
-
-    .card-header {
-        border: none;
-        cursor: pointer;
-    }
-
-    &.open {
+.card {
+    &.collapsible {
         .card-body {
-            height: auto;
-            padding: 1.25rem;
+            height: 0;
+            min-height: 0;
+            overflow: hidden;
+            padding: 0;
+            transition: all 0.3s ease;
+        }
+    
+        .card-header {
+            border: none;
+            cursor: pointer;
+        }
+    
+        &.open {
+            .card-body {
+                height: auto;
+                padding: 1.25rem;
+            }
+    
+            .card-header {
+                border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+            }
+        }
+    }
+
+    &.repo {
+        transition: all 0.3s ease;
+        cursor: pointer;
+
+        .repo-clickable {
+            color: initial;
+            &:hover {
+                text-decoration: none;
+            }
         }
 
-        .card-header {
-            border-bottom: 1px solid rgba(0, 0, 0, 0.125);
+        &:hover {
+            background-color: #D3D3D3;
         }
     }
 }
