@@ -5,6 +5,7 @@ import Loading from './components/Loading';
 import { Octokit } from "@octokit/rest";
 import { components } from "@octokit/openapi-types/types";
 import Help from './components/Help';
+import User from './components/User';
 
 const octokit = new Octokit();
 
@@ -31,13 +32,18 @@ function App() {
         <Container fluid>
             <Row style={{ justifyContent: 'center' }}>
                 <Col lg={3}>
+
                     <Form.Group style={{ marginTop: '20px', marginBottom: '10px' }}>
                         <Form.Control data-testid='search-form' type="text" placeholder='Enter username' disabled={loading} value={search} onChange={(e) => setSearch(e.target.value)} onKeyUp={handleKeyUp} />
-                        {Boolean(search) && <Help>Press Enter to search</Help>}
                     </Form.Group>
+
                     <Button data-testid='search-button' style={{ width: '100%' }} disabled={loading} onClick={handleSearch}>
                         <Loading visible={loading} /> Search
                     </Button>
+
+                    {
+                        users.map((user, index) => <User key={index} data={user} style={{ marginBottom: '10px', marginTop: '10px' }} />)
+                    }
                 </Col>
             </Row>
         </Container>

@@ -1,1 +1,19 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
+
+.card.collapsible {
+    cursor: pointer;
+
+    .card-body {
+        height: 0;
+        padding: 0;
+        overflow: hidden;
+        transition: all 0.3s ease;
+    }
+
+    &.open {
+        .card-body {
+            height: auto;
+            padding: 1.25rem;
+        }
+    }
+}
