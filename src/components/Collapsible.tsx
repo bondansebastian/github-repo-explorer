@@ -24,7 +24,7 @@ export default function Collapsible({ children, onOpen = () => {}, style = {}, t
         <Card className={open ? 'collapsible open' : 'collapsible'} style={style}>
             <Card.Header onClick={toggleState}>
                 {title}
-                <i className={`fa-solid fa-angle-${icon}`} style={{ float: 'right' }} />
+                <i className={`fa-solid fa-angle-${icon}`} style={{ float: 'right', lineHeight: 1.5 }} />
             </Card.Header>
             <Card.Body>{children}</Card.Body>
         </Card>
