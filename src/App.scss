@@ -1,8 +1,6 @@
 @import "~bootstrap/dist/css/bootstrap.min.css";
 
 .card.collapsible {
-    cursor: pointer;
-
     .card-body {
         height: 0;
         min-height: 0;
@@ -12,6 +10,7 @@
     }
     .card-header {
         border: none;
+        cursor: pointer;
     }
 
     &.open {

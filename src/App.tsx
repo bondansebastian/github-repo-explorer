@@ -2,12 +2,9 @@ import React, { useState } from 'react';
 import './App.scss';
 import { Button, Col, Container, Form, Row } from 'react-bootstrap';
 import Loading from './components/Loading';
-import { Octokit } from "@octokit/rest";
 import { components } from "@octokit/openapi-types/types";
-import Help from './components/Help';
 import User from './components/User';
-
-const octokit = new Octokit();
+import octokit from './octokit';
 
 function App() {
     const [loading, setLoading] = useState(false);
@@ -31,7 +28,7 @@ function App() {
     return (
         <Container fluid>
             <Row style={{ justifyContent: 'center' }}>
-                <Col lg={3}>
+                <Col xl={4} xxl={3}>
 
                     <Form.Group style={{ marginTop: '20px', marginBottom: '10px' }}>
                         <Form.Control data-testid='search-form' type="text" placeholder='Enter username' disabled={loading} value={search} onChange={(e) => setSearch(e.target.value)} onKeyUp={handleKeyUp} />
@@ -42,7 +39,7 @@ function App() {
                     </Button>
 
                     {
-                        users.map((user, index) => <User key={index} data={user} style={{ marginBottom: '10px', marginTop: '10px' }} />)
+                        users.map((user, index) => <User key={user.login} data={user} style={{ marginBottom: '10px', marginTop: '10px' }} />)
                     }
                 </Col>
             </Row>
