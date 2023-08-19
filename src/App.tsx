@@ -10,12 +10,18 @@ import NotificationContext from './contexts/NotificationContext';
 function App() {
     const { displayMessage } = useContext(NotificationContext);
     const [loading, setLoading] = useState(false);
+    const [message, setMessage] = useState('');
     const [search, setSearch] = useState('');
     const [users, setUsers] = useState<components["schemas"]["user-search-result-item"][]>([]);
 
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setMessage('');
+        setSearch(e.target.value);
+    }
+
     const handleKeyUp = (event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === "Enter") handleSearch();
-      };
+    };
 
     const handleSearch = async () => {
         setLoading(true);
@@ -25,6 +31,9 @@ function App() {
                 per_page: 5,
             });
             setUsers(response.data.items);
+            if (response.data.total_count === 0) {
+                setMessage(`No result found for "${search}"`);
+            }
         } catch (e:any) {
             displayMessage(e?.message || 'Unknown error occured');
         } finally {
@@ -38,12 +47,18 @@ function App() {
                 <Col xl={4} xxl={3}>
 
                     <Form.Group style={{ marginTop: '20px', marginBottom: '10px' }}>
-                        <Form.Control data-testid='search-form' type="text" placeholder='Enter username' disabled={loading} value={search} onChange={(e) => setSearch(e.target.value)} onKeyUp={handleKeyUp} />
+                        <Form.Control data-testid='search-form' type="text" placeholder='Enter username' disabled={loading} value={search} onChange={handleChange} onKeyUp={handleKeyUp} />
                     </Form.Group>
 
                     <Button data-testid='search-button' style={{ width: '100%' }} disabled={loading} onClick={handleSearch}>
                         <Loading visible={loading} /> Search
                     </Button>
+
+                    {
+                        Boolean(message) && (
+                            <p className='text-muted text-center' style={{ marginTop: '10px' }}>{message}</p>
+                        )
+                    }
 
                     {
                         users.map((user, index) => <User key={user.login} data={user} style={{ marginBottom: '10px', marginTop: '10px' }} />)
