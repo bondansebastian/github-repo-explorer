@@ -27,7 +27,7 @@ function App() {
         setLoading(true);
         try {
             const response = await octokit.rest.search.users({
-                q: `${encodeURIComponent(search)} in:name type:user`,
+                q: `${encodeURIComponent(search)} in:login type:user`,
                 per_page: 5,
             });
             setUsers(response.data.items);
